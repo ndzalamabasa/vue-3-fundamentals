@@ -1,0 +1,42 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  align-items: center;
+  justify-content: center;
+  gap: 2rem;
+  font-family: sans-serif;
+}
+
+.cast,
+.fav-cast {
+  margin-top: 2rem;
+}
+
+.cast ul,
+.fav-cast ul {
+  max-width: 375px;
+  margin: auto;
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.cast li,
+.fav-cast li {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.cast button,
+.fav-cast button {
+  cursor: pointer;
+}

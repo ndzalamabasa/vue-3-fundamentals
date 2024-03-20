@@ -4,16 +4,61 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Playground | Vue 3</title>
+    <link rel="stylesheet" href="style.css" />
   </head>
   <body>
     <h1>Netflix Fav Show</h1>
     <div id="app">
       <h2>{{show.name}}</h2>
+      <form>
+        <h3>Add character</h3>
+        <div class="form-control">
+
+          <label for="name">name:</label>
+          <input v-model.lazy="show.newCast.name" id="name" name="name">
+        </div>
+        <div class="form-control">
+          <label for="favorite">Is Favorite</label>
+          <input type="checkbox" name="favorite" id="favorite" v-model="show.newCast.favorite">
+        </div>
+          <button type="button" @click="addCharacter">Add</button>
+      </form>
       <p v-if="show.characters.length === 0">show does not have characters</p>
-      <div v-else>
+      <div class="cast" v-else>
         <h3>Cast</h3>
+        <p v-if="show.characters.length ===  show.characters.filter(char => char.favorite).length">All characters migrated to favorites</pv>
         <ul>
-          <li v-for="character in show.characters">{{ character.name }}</li>
+          <li
+            v-for="character in show.characters.filter(char => !char.favorite)"
+          >
+            <span>{{ character.name }}</span>
+            <button type="button" @click="addToFavorites(character, event)">
+              add to favorites
+            </button>
+          </li>
+        </ul>
+      </div>
+      <div class="fav-cast">
+        <h4>Fovorites</h4>
+        <p
+          v-if="show.characters.filter(character => character.favorite).length < 1"
+        >
+          no favorite character
+        </p>
+        <ul
+          v-show="show.characters.filter(character => character.favorite).length > 0"
+        >
+          <li
+            v-for="character in show.characters.filter(character => character.favorite)"
+          >
+            <span>{{ character.name }}</span>
+            <button
+              type="button"
+              @click="removefromFavorites(character, event)"
+            >
+              remove from favs
+            </button>
+          </li>
         </ul>
       </div>
     </div>
@@ -24,16 +69,35 @@
       const app = createApp({
         data: () => ({
           show: {
+            newCast: {
+              name: "",
+              favorite: false,
+            },
             name: "Blood & Water",
             characters: [
-              { name: "Ama Qamata" },
-              { name: "Khosi Ngema" },
-              { name: "Gail Mabalane" },
-              { name: "Thabang Molaba" },
-              { name: "Dillon Windvogel" },
+              { name: "Ama Qamata", favorite: false },
+              { name: "Khosi Ngema", favorite: false },
+              { name: "Gail Mabalane", favorite: false },
+              { name: "Thabang Molaba", favorite: false },
+              { name: "Dillon Windvogel", favorite: false },
             ],
           },
         }),
+        methods: {
+          addToFavorites(character, event) {
+            character.favorite = true;
+          },
+          removefromFavorites(character, event) {
+            character.favorite = false;
+          },
+          addCharacter(){
+            this.show.characters.push(this.show.newCast);
+            this.show.newCast = {
+              name: "",
+              favorite: false,
+            }
+          }
+        },
       });
 
       app.mount("#app");
